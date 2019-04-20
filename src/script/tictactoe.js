@@ -16,7 +16,7 @@ const TicTacToe = (() => {
     let plyturn; // This is here to prevent player to cheat and to play multiples times before the AI has played
     // let roundnbr; // This is the round number to help AI (and in particular the learning one) to play faster and better (better than counting number of plyteam)
 
-    function reset(hasAI){ // NOTE Not to be exported
+    function reset(hasAI){
         plyteam = "row"; // This is temp
         // NOTE is that even needed? Maybe just a [] is sufficient
         plycells = [null, null, null, null, null, null, null, null, null]; // Reset owners
@@ -37,6 +37,8 @@ const TicTacToe = (() => {
             }
         }
         plyturn = true;
+
+        console.log("Starting a new game...");
     }
     
     // NOTE Private or public?
@@ -45,15 +47,17 @@ const TicTacToe = (() => {
 
         plycells[cell.id] = ply;
         cell.setAttribute("class",`cell_${ply}`);
-        roundnbr++;
+        // roundnbr++;
 
         // Check if someone wins
-        let winner = getWinner();
+        const winner = getWinner();
         if (winner != null){ // NOTE Is coercion needed here?
             const msg = winner !== "eq" ? `Winner : ${winner}` : "Equality!"; // TODO Check if coercion is needed here
             alert(msg);
             const restart = confirm("Do you want to restart a game ?");
-            if (restart) reset();
+            if (restart){
+                reset();
+            }
         }
         return true;
     }
@@ -61,21 +65,21 @@ const TicTacToe = (() => {
     // NOTE Private or Public?
     // NOTE Check if it's possible to optimize more
     function getWinner(){
-        if (plycells[4]!=null&&(
-            (plycells[3]==plycells[4]&&plycells[4]==plycells[5])|| // HLine 2
-            (plycells[1]==plycells[4]&&plycells[4]==plycells[7])|| // VLine 2
-            (plycells[0]==plycells[4]&&plycells[4]==plycells[8])|| // DLine '\'
-            (plycells[2]==plycells[4]&&plycells[4]==plycells[6]) // DLine /
+        if (plycells[4]!==null&&(
+            (plycells[3]===plycells[4]&&plycells[4]===plycells[5])|| // HLine 2
+            (plycells[1]===plycells[4]&&plycells[4]===plycells[7])|| // VLine 2
+            (plycells[0]===plycells[4]&&plycells[4]===plycells[8])|| // DLine '\'
+            (plycells[2]===plycells[4]&&plycells[4]===plycells[6]) // DLine /
         )) return plycells[4];
         
-        if (plycells[0]!=null&&(
-            (plycells[0]==plycells[1]&&plycells[1]==plycells[2])|| // HLine 1
-            (plycells[0]==plycells[3]&&plycells[3]==plycells[6]) // VLine 1
+        if (plycells[0]!==null&&(
+            (plycells[0]===plycells[1]&&plycells[1]===plycells[2])|| // HLine 1
+            (plycells[0]===plycells[3]&&plycells[3]===plycells[6]) // VLine 1
         )) return plycells[0];
         
-        if (plycells[8]!=null&&(
-            (plycells[6]==plycells[7]&&plycells[7]==plycells[8])|| // HLine 3
-            (plycells[2]==plycells[5]&&plycells[5]==plycells[8]) // VLine 3
+        if (plycells[8]!==null&&(
+            (plycells[6]===plycells[7]&&plycells[7]===plycells[8])|| // HLine 3
+            (plycells[2]===plycells[5]&&plycells[5]===plycells[8]) // VLine 3
         )) return plycells[8];
         
         if (plycells.includes(null)) return null; // no winner
@@ -126,7 +130,9 @@ const TicTacToe = (() => {
             if (confirm("Do you want the AI to play first ?")){
                 // aiTurn();
             }
-        } else console.log("Player VS Player game started!");
+        } else {
+            console.log("Player VS Player game started!");
+        }
     });
 
     console.log("TicTacToe is ready...");
